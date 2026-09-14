@@ -13,6 +13,7 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${port}`,
     trace: 'retain-on-failure',
+    reducedMotion: 'reduce',
     ...(process.env.CI ? {} : { channel: 'chrome' }),
   },
   projects: [{ name: 'phone', use: { ...devices['iPhone 14 Pro Max'], defaultBrowserType: 'chromium' } }],
