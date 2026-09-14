@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /t/
+Disallow: /api/
+
+Sitemap: https://piss-poker.pages.dev/sitemap.xml
