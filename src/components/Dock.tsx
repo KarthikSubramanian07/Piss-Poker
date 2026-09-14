@@ -10,11 +10,22 @@ import {
 } from '../../shared/engine';
 import { fmt } from '../lib/format';
 import { useTable } from '../lib/table';
+import { useShake } from '../lib/motion';
 import { Icon } from './Icon';
+import { Num } from './Num';
 
 const ACT_FOR_AFTER_MS = 15_000;
 
 export function Dock() {
+  const shaking = useShake();
+  return (
+    <div className="dock-shake" data-shake={shaking || undefined}>
+      <DockBody />
+    </div>
+  );
+}
+
+function DockBody() {
   const { game, you, me, room, serverNow, away, member } = useTable();
   const [actingFor, setActingFor] = useState<string | null>(null);
 
@@ -56,7 +67,7 @@ function MyStatus() {
   if (!me) return null;
   const inHand = me.inHand && (game.phase === 'betting' || game.phase === 'showdown');
   let note: string;
-  if (!inHand) note = me.stack === 0 ? 'Out of chips' : me.sittingOut ? 'Sitting out' : 'In from the next hand';
+  if (!inHand) note = me.stack === 0 ? 'Busted' : me.sittingOut ? 'Sitting out' : 'In from the next hand';
   else if (me.folded) note = 'Folded';
   else if (me.allIn) note = 'All in';
   else note = me.committed > 0 ? `${fmt(me.committed)} in the pot` : 'In the hand';
@@ -65,7 +76,7 @@ function MyStatus() {
     <div className="my-status">
       <div>
         <span className="label">Your stack</span>
-        <span className="my-stack num">{fmt(me.stack)}</span>
+        <Num value={me.stack} className="my-stack" />
       </div>
       <div className="my-note">
         <span>{note}</span>
@@ -143,9 +154,7 @@ function ActionPanel({ legal, player, actingFor, onCancel }: ActionProps) {
       <div className="turn-head">
         <div>
           <span className="turn-title">{actingFor ? `Acting for ${player.name}` : 'Your turn'}</span>
-          <span className="turn-sub">
-            {legal.toCall > 0 ? `${fmt(legal.toCall)} to call` : 'Nothing to call'} · stack {fmt(player.stack)}
-          </span>
+          <span className="turn-sub">Stack {fmt(player.stack)}</span>
         </div>
         {actingFor && (
           <button className="icon-btn" onClick={onCancel} aria-label="Stop acting for this player">
@@ -357,12 +366,7 @@ function AwardPanel() {
 // ---------------- hand over ----------------
 
 function ResultsPanel() {
-  const { game, run, busy, v, nameOf, room, me } = useTable();
-  const totals = new Map<string, number>();
-  for (const r of game.results) totals.set(r.id, (totals.get(r.id) ?? 0) + r.amount);
-  const potWinners = new Map<number, number>();
-  for (const r of game.results) potWinners.set(r.potId, (potWinners.get(r.potId) ?? 0) + 1);
-  const split = [...potWinners.values()].some((n) => n > 1);
+  const { game, run, busy, v, room, me } = useTable();
   const ready = game.players.filter(eligibleForHand).length >= 2;
   const iAmOut = me && me.stack === 0;
 
@@ -380,15 +384,6 @@ function ResultsPanel() {
 
   return (
     <div className="dock dock-done">
-      <ul className="results">
-        {[...totals].map(([id, amount]) => (
-          <li key={id}>
-            <span className="result-name">{nameOf(id)}</span>
-            <span className="result-verb">{split ? 'takes' : 'wins'}</span>
-            <span className="num result-amount">{fmt(amount)}</span>
-          </li>
-        ))}
-      </ul>
       {iAmOut && (
         <button className="btn btn-quiet btn-lg btn-block" disabled={busy} onClick={() => run({ type: 'rebuy' })}>
           Rebuy for {fmt(game.settings.startingStack)}
@@ -401,7 +396,7 @@ function ResultsPanel() {
           </button>
         )}
         <button className="btn btn-primary btn-xl grow" disabled={!ready || busy} onClick={() => run({ type: 'next', v })}>
-          {ready ? 'Deal next hand' : 'Waiting for players with chips'}
+          {ready ? 'Deal next hand' : 'Needs two players with chips'}
           {ready && <kbd className="kbd">N</kbd>}
         </button>
       </div>
@@ -432,7 +427,7 @@ function LobbyDock() {
   return (
     <div className="dock">
       <button className="btn btn-primary btn-xl btn-block" disabled={!ready || busy} onClick={() => run({ type: 'start', v })}>
-        {ready ? 'Deal the first hand' : 'Waiting for one more player'}
+        {ready ? 'Deal the first hand' : 'Needs one more player'}
       </button>
     </div>
   );

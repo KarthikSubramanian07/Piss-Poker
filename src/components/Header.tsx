@@ -21,7 +21,14 @@ export function Header({ onInvite, onMenu }: { onInvite: () => void; onMenu: () 
       </button>
       <div className="topbar-phase" aria-live="polite">
         {game.handNo > 0 && <span className="muted">Hand {game.handNo}</span>}
-        <span className="phase-name">{phase}</span>
+        {game.handNo === 69 && (
+          <span className="nice" aria-hidden="true">
+            nice
+          </span>
+        )}
+        <span className="phase-name" key={phase}>
+          {phase}
+        </span>
       </div>
       <div className="topbar-end">
         <span className="conn" data-online={online} title={online ? 'Connected' : 'Reconnecting'} role="img" aria-label={online ? 'Connected' : 'Reconnecting'} />

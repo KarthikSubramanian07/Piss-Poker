@@ -19,7 +19,7 @@ export function Room({ code, display, navigate }: { code: string; display: boole
     return (
       <Notice
         title={`No table called ${code}`}
-        body="Double check the code, or start a new table."
+        body="Double check the code. Or maybe it folded."
         action="Back home"
         onAction={() => navigate('/')}
       />

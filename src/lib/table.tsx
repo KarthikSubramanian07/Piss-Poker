@@ -35,7 +35,10 @@ export function TableProvider({ conn, children }: { conn: RoomConnection; childr
       setInflight((n) => n + 1);
       try {
         const reply = await send(msg);
-        if (!reply.ok) toast(reply.code === 'STALE' ? 'The table just changed. Take another look.' : reply.message);
+        if (!reply.ok) {
+          window.dispatchEvent(new Event('pp:reject'));
+          toast(reply.code === 'STALE' ? 'The table moved. Take another look.' : reply.message);
+        }
         return reply.ok;
       } finally {
         setInflight((n) => n - 1);

@@ -73,7 +73,7 @@ test('three players play a hand from deal to payout', async ({ browser }) => {
   await cat.getByRole('button', { name: 'Ben' }).click();
   await cat.getByRole('button', { name: 'Pay out' }).click();
 
-  await expect(ana.locator('.results li')).toHaveText(/Ben\s*wins\s*130/);
+  await expect(ana.locator('.stage-line')).toHaveText('Ben takes it');
   await expect(stackOf(ana, 'Ben')).toHaveText('1,070');
   await expect(stackOf(ben, 'Ana')).toHaveText('940');
   await expect(stackOf(cat, 'Cat')).toHaveText('990');
