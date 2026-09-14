@@ -48,6 +48,19 @@ jobs:
           path: test-results
           retention-days: 7
 
+  deploy-web:
+    name: Deploy Pages site
+    needs: [verify, e2e]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      PAGES_DEPLOY_HOOK: ${{ secrets.PAGES_DEPLOY_HOOK }}
+    steps:
+      - if: env.PAGES_DEPLOY_HOOK == ''
+        run: echo "::notice::PAGES_DEPLOY_HOOK is not set, skipping the Pages deploy."
+      - if: env.PAGES_DEPLOY_HOOK != ''
+        run: curl --fail --silent --show-error -X POST "$PAGES_DEPLOY_HOOK" > /dev/null
+
   deploy-api:
     name: Deploy API worker
     needs: [verify, e2e]
@@ -59,7 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - if: env.CLOUDFLARE_API_TOKEN == ''
-        run: echo "::notice::CLOUDFLARE_API_TOKEN is not set, skipping the worker deploy. The Pages frontend still deploys through Cloudflare's GitHub integration."
+        run: echo "::notice::CLOUDFLARE_API_TOKEN is not set, skipping the worker deploy. The Pages site still deploys through its deploy hook."
       - uses: actions/setup-node@v5
         if: env.CLOUDFLARE_API_TOKEN != ''
         with:
