@@ -1,5 +1,7 @@
 import { bySeat, findPlayer, potTotal } from '../../shared/engine';
 import { Qr } from '../components/Qr';
+import { outcomeLine } from '../components/Stage';
+import { Num } from '../components/Num';
 import { seatStatus } from '../components/Seats';
 import { useWakeLock } from '../lib/device-features';
 import { fmt, NEXT_CARDS, roomUrl, STREET_NAMES } from '../lib/format';
@@ -15,10 +17,9 @@ export function Display({ onExit }: { onExit: () => void }) {
   let headline = '';
   if (game.phase === 'lobby') headline = 'Scan to join';
   else if (game.phase === 'betting' && actor) headline = freshStreet ? NEXT_CARDS[game.street] : `${actor.name} to act`;
-  else if (game.phase === 'showdown') headline = game.runout ? 'Run out the board' : 'Showdown';
+  else if (game.phase === 'showdown') headline = game.runout ? 'All in. Run it out.' : 'Cards up';
   else if (game.phase === 'done') {
-    const winners = [...new Set(game.results.map((r) => r.id))].map(nameOf);
-    headline = winners.length ? `${winners.join(' & ')} ${winners.length > 1 ? 'split' : 'wins'}` : 'Hand over';
+    headline = outcomeLine(game, nameOf);
   }
 
   return (
@@ -37,9 +38,9 @@ export function Display({ onExit }: { onExit: () => void }) {
       <section className="display-center">
         <div className="display-pot">
           <span className="label">{game.phase === 'done' ? 'Paid out' : 'Pot'}</span>
-          <span className="display-pot-amount num">{fmt(pot)}</span>
+          <Num value={pot} className="display-pot-amount" />
         </div>
-        <p className="display-headline" aria-live="polite">
+        <p className="display-headline" aria-live="polite" key={headline}>
           {headline}
         </p>
         {game.phase === 'betting' && game.currentBet > 0 && <p className="display-sub num">Bet {fmt(game.currentBet)}</p>}
@@ -61,7 +62,7 @@ export function Display({ onExit }: { onExit: () => void }) {
                 {p.name}
                 {hand && game.buttonId === p.id && <span className="tag">D</span>}
               </span>
-              <span className="display-seat-stack num">{fmt(p.stack)}</span>
+              <Num value={p.stack} className="display-seat-stack" />
               <span className="display-seat-foot">
                 {hand && p.bet > 0 ? <span className="num">bet {fmt(p.bet)}</span> : <span />}
                 {status && <span className="muted">{status}</span>}

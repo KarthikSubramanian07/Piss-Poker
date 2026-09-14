@@ -21,7 +21,7 @@ export function Join({ onDisplay }: { onDisplay: () => void }) {
   const status =
     game.phase === 'lobby'
       ? room.members.length === 0
-        ? 'Nobody is here yet'
+        ? 'Nobody here yet. Poker for one is just solitaire.'
         : `${room.members.length} waiting to start`
       : `Hand ${game.handNo} in progress`;
 

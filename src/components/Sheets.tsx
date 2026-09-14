@@ -361,7 +361,7 @@ function Settle() {
         </tbody>
       </table>
 
-      <h3 className="settle-title">{transfers.length ? 'To square up' : 'Everyone is even'}</h3>
+      <h3 className="settle-title">{transfers.length ? 'To square up' : 'Everyone is even. Suspicious.'}</h3>
       {transfers.length > 0 && (
         <ul className="transfers">
           {transfers.map((t, i) => (
