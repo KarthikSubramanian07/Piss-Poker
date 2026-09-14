@@ -32,12 +32,16 @@ const stackOf = (page: Page, name: string) =>
   page.getByRole('listitem').filter({ has: page.locator('.seat-name', { hasText: new RegExp(`^${name}`) }) }).locator('.seat-stack');
 
 async function actWhoeverIsUp(pages: Page[], action: 'Check' | RegExp) {
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 100; i++) {
     for (const p of pages) {
-      if (await yourTurn(p).isVisible()) {
-        await p.getByRole('button', { name: action }).click();
-        return p;
+      if (!(await yourTurn(p).isVisible())) continue;
+      try {
+        await p.getByRole('button', { name: action }).click({ timeout: 2_000 });
+      } catch {
+        continue; // the turn moved on between the check and the click
       }
+      await expect(yourTurn(p)).toBeHidden({ timeout: 3_000 }).catch(() => undefined);
+      return p;
     }
     await pages[0].waitForTimeout(100);
   }
