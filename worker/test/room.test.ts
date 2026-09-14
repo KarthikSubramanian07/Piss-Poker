@@ -37,11 +37,11 @@ describe('http api', () => {
 
   it('rate limits table creation per address', async () => {
     const statuses: number[] = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 22; i++) {
       const res = await api('/api/rooms', { method: 'POST', headers: { 'cf-connecting-ip': '203.0.113.9' } });
       statuses.push(res.status);
     }
-    expect(statuses.slice(0, 10).every((s) => s === 201)).toBe(true);
+    expect(statuses.slice(0, 20).every((s) => s === 201)).toBe(true);
     expect(statuses.at(-1)).toBe(429);
   });
 
