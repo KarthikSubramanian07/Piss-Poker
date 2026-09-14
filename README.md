@@ -131,10 +131,10 @@ Other scripts: `npm run typecheck`, `npm run build`, `npm run shots` (screenshot
 
 ## Deployment
 
-Pushes to `main` ship automatically:
+Pushes to `main` ship automatically once typecheck, unit, worker and end-to-end tests pass:
 
-1. **Frontend and Pages Function:** Cloudflare Pages builds the repository through its GitHub integration (`npm run test:unit && npm run build`) and serves it at `piss-poker.pages.dev`.
-2. **API worker:** the `deploy-api` job in GitHub Actions runs `wrangler deploy` after typecheck, unit, worker and end-to-end tests pass. It needs two repository secrets: `CLOUDFLARE_ACCOUNT_ID` and a `CLOUDFLARE_API_TOKEN` with *Workers Scripts: Edit* permission.
+1. **Frontend and Pages Function:** the `deploy-web` job calls a Cloudflare Pages deploy hook (repository secret `PAGES_DEPLOY_HOOK`). Pages then builds (`npm run test:unit && npm run build`) and serves `piss-poker.pages.dev`.
+2. **API worker:** the `deploy-api` job runs `wrangler deploy`. It needs a `CLOUDFLARE_API_TOKEN` secret with *Workers Scripts: Edit* permission (`CLOUDFLARE_ACCOUNT_ID` is already set). The worker rarely changes, so without the token it is skipped and can be shipped with `npm run deploy:api`.
 
 Manual deploy from a logged-in machine: `npm run deploy`.
 
