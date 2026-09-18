@@ -15,7 +15,7 @@
 <p>
   <img src="docs/your-turn-light.png" width="240" alt="Your turn: the action bar floods yellow with Fold, Call and Raise" />
   <img src="docs/waiting-dark.png" width="240" alt="Dark mode while waiting: the pot, a Deal the flop prompt and the seat list" />
-  <img src="docs/showdown-dark.png" width="240" alt="Showdown: tap who won each pot" />
+  <img src="docs/showdown-dark.png" width="240" alt="Showdown: two winners ticked, each share shown before paying out" />
 </p>
 
 ---
@@ -30,7 +30,8 @@ Before writing a line, we read the code of 22 open source chip trackers and put 
 
 - **One phone per player, zero accounts.** Start a table, share a four-letter code, QR code or link. Names are the only sign up.
 - **Real no-limit hold'em rules.** Blinds post themselves, turn order is enforced, and the big blind keeps its option. Minimum raises follow the last full raise, and short all-ins only reopen betting when they add up to a full raise (TDA rule 47).
-- **Side pots without arguments.** Pots are built in layers from what each player put in, uncalled chips go back automatically, and folded chips stay in as dead money. Split pots pay the odd chip clockwise from the button.
+- **Side pots without arguments.** Pots are built in layers from what each player put in, uncalled chips go back automatically, and folded chips stay in as dead money.
+- **Chops take one tap per winner.** Same hand as somebody else? Tap both names. Every pot lists its players with a checkbox, each share appears the moment you pick, and the odd chip goes clockwise from the dealer with a line saying so.
 - **Your turn is impossible to miss.** The action bar floods yellow, a soft two-note chime plays, and Android phones buzz. The screen stays awake while a table is open.
 - **Deal prompts for the dealer.** "Deal the flop", "Run out the board", "Who won?". The app tells the table what the cards should be doing.
 - **Built for real tables.** Anyone can undo, seats can be added for players without a phone, and anyone can act for someone who is away. A phone can hand its seat to a new device (with the table's approval), and dropped connections reconnect by themselves.
@@ -111,6 +112,7 @@ FUZZ_GAMES=25000 npm run test:unit   # the long fuzz run
 - **Integration tests** cover stale versions, concurrent `next` and `undo`, seat claims, kicks, host handoff, oversized and malformed messages, rate limits and room expiry.
 - **End-to-end tests** cover:
   - a complete hand across three phones
+  - two players chopping a pot, shares previewed before the payout
   - a real side pot
   - acting for a seat without a phone, plus undo
   - moving a seat to a new device
