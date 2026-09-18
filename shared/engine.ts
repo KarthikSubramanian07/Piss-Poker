@@ -519,16 +519,27 @@ function enterShowdown(g: Game) {
   if (g.pots.every((p) => p.paid)) finish(g);
 }
 
-function payout(g: Game, pot: Pot, winners: string[]) {
+/**
+ * How a pot divides between winners, clockwise from the button so odd chips land the
+ * same way every time. The dock previews a split with this, so what you see is paid.
+ */
+export function shareOut(g: Game, amount: number, winners: string[]): { id: string; amount: number }[] {
   const button = findPlayer(g, g.buttonId);
   const order = clockwise(g, button ? button.seat : -1, (q) => winners.includes(q.id));
-  const share = Math.floor(pot.amount / winners.length);
-  let odd = pot.amount - share * winners.length;
-  for (const w of order) {
-    const amount = share + (odd > 0 ? 1 : 0);
+  const share = Math.floor(amount / order.length);
+  let odd = amount - share * order.length;
+  return order.map((w) => {
+    const take = share + (odd > 0 ? 1 : 0);
     odd -= 1;
+    return { id: w.id, amount: take };
+  });
+}
+
+function payout(g: Game, pot: Pot, winners: string[]) {
+  for (const { id, amount } of shareOut(g, pot.amount, winners)) {
+    const w = findPlayer(g, id)!;
     w.stack += amount;
-    g.results.push({ potId: pot.id, id: w.id, amount });
+    g.results.push({ potId: pot.id, id, amount });
   }
   pot.paid = true;
 }
