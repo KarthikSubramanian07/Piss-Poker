@@ -74,8 +74,8 @@ test('three players play a hand from deal to payout', async ({ browser }) => {
 
   for (let i = 0; i < 6; i++) await actWhoeverIsUp([ana, ben], 'Check');
   await expect(cat.getByText('Who won?')).toBeVisible();
-  await cat.getByRole('button', { name: 'Ben' }).click();
-  await cat.getByRole('button', { name: 'Pay out' }).click();
+  await cat.locator('.win-row').filter({ hasText: 'Ben' }).click();
+  await cat.getByRole('button', { name: 'Pay Ben 130' }).click();
 
   await expect(ana.locator('.stage-line')).toHaveText('Ben takes it');
   await expect(stackOf(ana, 'Ben')).toHaveText('1,070');
@@ -118,7 +118,7 @@ test('short stack all in creates a side pot that pays the right people', async (
   await cat.getByRole('button', { name: 'All in 990' }).click();
 
   await expect(ana.getByText('Who won?')).toBeVisible();
-  await expect(ana.getByText('Deal out the rest of the board first.', { exact: false })).toBeVisible();
+  await expect(ana.locator('.stage-line')).toHaveText('All in. Run it out.');
   const main = ana.locator('.pot-pick').filter({ hasText: 'Main pot' });
   const side = ana.locator('.pot-pick').filter({ hasText: 'Side pot 1' });
   await expect(main).toContainText('300');
@@ -135,6 +135,42 @@ test('short stack all in creates a side pot that pays the right people', async (
   await expect(ana.getByRole('button', { name: 'Rebuy for 1,000' })).toBeVisible();
   await ana.getByRole('button', { name: 'Rebuy for 1,000' }).click();
   await expect(stackOf(ben, 'Ana')).toHaveText('1,000');
+});
+
+test('two players with the same hand chop the pot', async ({ browser }) => {
+  const ana = await seat(browser, 'Ana');
+  const code = codeOf(ana);
+  const ben = await seat(browser, 'Ben', code);
+  const cat = await seat(browser, 'Cat', code);
+
+  await ana.getByRole('button', { name: 'Deal the first hand' }).click();
+  await expect(yourTurn(ana)).toBeVisible();
+  await ana.getByRole('button', { name: /Call/ }).click();
+  await expect(yourTurn(ben)).toBeVisible();
+  await ben.getByRole('button', { name: /Call/ }).click();
+  await expect(yourTurn(cat)).toBeVisible();
+  await cat.getByRole('button', { name: 'Check' }).click();
+  for (let i = 0; i < 9; i++) await actWhoeverIsUp([ana, ben, cat], 'Check');
+
+  await expect(ana.getByText('Tap every winner. Two or more chop it.')).toBeVisible();
+  const rowFor = (page: Page, name: string) => page.locator('.win-row').filter({ hasText: name });
+
+  await rowFor(ana, 'Ana').click();
+  await expect(rowFor(ana, 'Ana').locator('.win-take')).toHaveText('+30');
+  await expect(rowFor(ana, 'Ben').locator('.win-take')).toHaveText('Split');
+  await expect(ana.getByRole('button', { name: 'Pay Ana 30' })).toBeVisible();
+
+  await rowFor(ana, 'Ben').click();
+  await expect(rowFor(ana, 'Ana').locator('.win-take')).toHaveText('+15');
+  await expect(rowFor(ana, 'Ben').locator('.win-take')).toHaveText('+15');
+  await expect(ana.getByText('Chopped two ways. 15 each.')).toBeVisible();
+
+  await ana.getByRole('button', { name: 'Chop 30 two ways' }).click();
+  await expect(ben.locator('.stage-line')).toHaveText(/chop it/);
+  await expect(stackOf(cat, 'Ana')).toHaveText('1,005');
+  await expect(stackOf(cat, 'Ben')).toHaveText('1,005');
+  await expect(stackOf(cat, 'Cat')).toHaveText('990');
+  for (const p of [ana, ben, cat]) expect((p as Page & { errors: string[] }).errors).toEqual([]);
 });
 
 test('anyone can act for a seat without a phone, and undo rolls it back', async ({ browser }) => {

@@ -75,8 +75,10 @@ for (let i = 0; i < 9; i++) {
 }
 await ana.getByText('Who won?').waitFor();
 await shot(ana, '09-showdown');
-await ben.getByRole('button', { name: 'Cat' }).click();
-await ben.getByRole('button', { name: 'Pay out' }).click();
+await ana.locator('.win-row').filter({ hasText: 'Cat' }).click();
+await ana.locator('.win-row').filter({ hasText: 'Ben' }).click();
+await shot(ana, '09b-chop');
+await ana.locator('.dock-award .btn-primary').click();
 await ana.getByRole('button', { name: /Deal next hand/ }).waitFor();
 await shot(ana, '10-hand-over');
 
