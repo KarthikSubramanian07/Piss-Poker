@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
+  bySeat,
   eligibleForHand,
   findPlayer,
   legalActions,
   potTotal,
+  shareOut,
   type ActionKind,
   type Legal,
   type Player,
@@ -320,47 +322,74 @@ function AwardPanel() {
 
   const complete = open.every((p) => (picks[p.id] ?? []).length > 0);
   const potName = (i: number) => (open.length === 1 ? 'Pot' : i === 0 ? 'Main pot' : `Side pot ${i}`);
+  const only = open.length === 1 ? (picks[open[0].id] ?? []) : null;
+  const payLabel = !complete
+    ? 'Tap the winner'
+    : only && only.length === 1
+      ? `Pay ${nameOf(only[0])} ${fmt(open[0].amount)}`
+      : only && only.length > 1
+        ? `Chop ${fmt(open[0].amount)} ${WAYS[only.length] ?? `${only.length} ways`}`
+        : 'Pay out';
 
   return (
     <div className="dock dock-award">
       <div className="turn-head">
         <div>
           <span className="turn-title">Who won?</span>
-          <span className="turn-sub">
-            {game.runout ? 'Deal out the rest of the board first. ' : ''}Tap more than one name to split.
-          </span>
+          <span className="turn-sub">Tap every winner. Two or more chop it.</span>
         </div>
       </div>
       <div className="pots">
-        {open.map((pot, i) => (
-          <fieldset key={pot.id} className="pot-pick">
-            <legend>
-              <span>{potName(i)}</span>
-              <span className="num">{fmt(pot.amount)}</span>
-            </legend>
-            <div className="chip-list">
-              {pot.eligible.map((id) => {
-                const on = (picks[pot.id] ?? []).includes(id);
-                return (
-                  <button key={id} className="chip chip-lg" aria-pressed={on} onClick={() => toggle(pot.id, id)}>
-                    {on && <Icon name="check" size={16} />}
-                    {nameOf(id)}
-                  </button>
-                );
-              })}
-            </div>
-          </fieldset>
-        ))}
+        {open.map((pot, i) => {
+          const picked = picks[pot.id] ?? [];
+          const cut = shareOut(game, pot.amount, picked);
+          const take = new Map(cut.map((c) => [c.id, c.amount]));
+          const seats = bySeat(game).filter((p) => pot.eligible.includes(p.id));
+          return (
+            <fieldset key={pot.id} className="pot-pick">
+              <legend>
+                <span>{potName(i)}</span>
+                <span className="num">{fmt(pot.amount)}</span>
+              </legend>
+              <div className="win-list">
+                {seats.map((p) => {
+                  const on = picked.includes(p.id);
+                  return (
+                    <button key={p.id} className="win-row" aria-pressed={on} onClick={() => toggle(pot.id, p.id)}>
+                      <span className="win-box">{on && <Icon name="check" size={15} />}</span>
+                      <span className="win-name">{nameOf(p.id)}</span>
+                      <span className="win-take num">{on ? `+${fmt(take.get(p.id) ?? 0)}` : picked.length > 0 ? 'Split' : ''}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              {picked.length > 1 && <p className="win-note">{chopNote(cut, nameOf)}</p>}
+            </fieldset>
+          );
+        })}
       </div>
       <button
         className="btn btn-primary btn-xl btn-block"
         disabled={!complete || busy}
         onClick={() => run({ type: 'award', v, winners: Object.fromEntries(open.map((p) => [p.id, picks[p.id]])) })}
       >
-        {complete ? 'Pay out' : 'Pick a winner'}
+        {payLabel}
       </button>
     </div>
   );
+}
+
+const WAYS: Record<number, string> = { 2: 'two ways', 3: 'three ways', 4: 'four ways', 5: 'five ways' };
+
+/** Spells out an uneven chop so nobody has to count the odd chips themselves. */
+function chopNote(cut: { id: string; amount: number }[], nameOf: (id: string) => string) {
+  const low = Math.min(...cut.map((c) => c.amount));
+  const odd = cut.filter((c) => c.amount > low);
+  const ways = WAYS[cut.length] ?? `${cut.length} ways`;
+  if (odd.length === 0) return `Chopped ${ways}. ${fmt(low)} each.`;
+  const names = odd.map((c) => nameOf(c.id));
+  const list = names.length === 1 ? names[0] : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+  return `${fmt(low)} each. Odd chip${odd.length > 1 ? 's' : ''} to ${list}, first past the dealer.`;
 }
 
 // ---------------- hand over ----------------
