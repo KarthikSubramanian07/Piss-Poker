@@ -13,6 +13,7 @@ import {
   setSeatOrder,
   setSittingOut,
   setStack,
+  shareOut,
   startHand,
   updateSettings,
   type Game,
@@ -261,6 +262,23 @@ describe('pots and showdown', () => {
       ['p3', 3],
       ['p0', 2],
     ]);
+  });
+
+  it('shareOut previews exactly what award pays, odd chips included', () => {
+    let g = startHand(table([1000, 1000, 1000, 1000], { sb: 1, bb: 2 }));
+    g = call(g, 'p3');
+    g = call(g, 'p0');
+    g = call(g, 'p1');
+    g = checkDown(check(g, 'p2'));
+    const preview = shareOut(g, g.pots[0].amount, ['p0', 'p2', 'p3']);
+    expect(preview).toEqual([
+      { id: 'p2', amount: 3 },
+      { id: 'p3', amount: 3 },
+      { id: 'p0', amount: 2 },
+    ]);
+    expect(preview.reduce((sum, r) => sum + r.amount, 0)).toBe(g.pots[0].amount);
+    const paid = award(g, { 0: ['p0', 'p2', 'p3'] });
+    expect(paid.results.map((r) => ({ id: r.id, amount: r.amount }))).toEqual(preview);
   });
 
   it('dead money above every live player merges into the top live pot', () => {
