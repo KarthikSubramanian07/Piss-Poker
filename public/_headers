@@ -5,9 +5,17 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Cross-Origin-Opener-Policy: same-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Vary: Accept
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
 /t/*
   X-Robots-Tag: noindex
+
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300

@@ -1,6 +1,12 @@
 User-agent: *
 Allow: /
+Allow: /llms.txt
+Allow: /index.md
+Allow: /about/
+Allow: /contact/
+Allow: /privacy/
 Disallow: /t/
 Disallow: /api/
 
 Sitemap: https://piss-poker.pages.dev/sitemap.xml
+

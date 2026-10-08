@@ -1,7 +1,7 @@
 {
-  "name": "Piss Poker",
+  "name": "Piss Poker tracker",
   "short_name": "Piss Poker",
-  "description": "Chips on your phone, cards on the table.",
+  "description": "Realtime chip tracker for live home poker. Chips on your phone, cards on the table.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

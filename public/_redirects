@@ -1,0 +1,2 @@
+# Live tables are client-routed. Middleware also rewrites these; this covers deploys without Functions.
+/t/*  /index.html  200
