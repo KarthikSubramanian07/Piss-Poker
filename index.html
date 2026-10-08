@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Piss Poker · Chips on your phone, cards on the table</title>
+    <title>Piss Poker tracker · Chips on your phone, cards on the table</title>
     <meta
       name="description"
-      content="A free realtime chip tracker for live home poker. Deal real cards, and everyone bets, raises and wins pots on their own phone. No app, no sign up."
+      content="Piss Poker tracker: a free realtime chip tracker for live home poker. Deal real cards, and everyone bets, raises and wins pots on their own phone. No app, no sign up."
     />
     <link rel="canonical" href="https://piss-poker.pages.dev/" />
+    <link rel="alternate" type="text/markdown" href="https://piss-poker.pages.dev/index.md" title="Markdown" />
+    <link rel="describedby" href="https://piss-poker.pages.dev/llms.txt" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
@@ -17,6 +19,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Piss Poker" />
     <meta name="format-detection" content="telephone=no" />
+    <meta
+      name="keywords"
+      content="Piss Poker, Piss Poker tracker, poker chip tracker, home poker, Texas Hold'em chip tracker, realtime poker chips"
+    />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
@@ -25,38 +31,145 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Piss Poker" />
-    <meta property="og:title" content="Piss Poker · Chips on your phone, cards on the table" />
+    <meta property="og:title" content="Piss Poker tracker · Chips on your phone, cards on the table" />
     <meta
       property="og:description"
-      content="Realtime poker chips for your home game. Everyone plays from their own phone while the cards stay real."
+      content="Realtime poker chip tracker for your home game. Everyone plays from their own phone while the cards stay real."
     />
     <meta property="og:url" content="https://piss-poker.pages.dev/" />
     <meta property="og:image" content="https://piss-poker.pages.dev/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Piss Poker: a phone showing a pot of 1,240 chips and a yellow Your turn panel" />
+    <meta property="og:image:alt" content="Piss Poker tracker: a phone showing a pot of 1,240 chips and a yellow Your turn panel" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Piss Poker · Chips on your phone, cards on the table" />
-    <meta name="twitter:description" content="Realtime poker chips for your home game. No app, no sign up." />
+    <meta name="twitter:title" content="Piss Poker tracker · Chips on your phone, cards on the table" />
+    <meta name="twitter:description" content="Realtime poker chip tracker for your home game. No app, no sign up." />
     <meta name="twitter:image" content="https://piss-poker.pages.dev/og.png" />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Piss Poker",
-        "url": "https://piss-poker.pages.dev/",
-        "description": "Realtime chip tracker for live Texas Hold'em home games. Cards stay physical, chips live on everyone's phone.",
-        "applicationCategory": "GameApplication",
-        "operatingSystem": "Any",
-        "browserRequirements": "Requires a modern web browser",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://piss-poker.pages.dev/#organization",
+            "name": "Piss Poker",
+            "url": "https://piss-poker.pages.dev/",
+            "logo": "https://piss-poker.pages.dev/icon-512.png",
+            "description": "Realtime chip tracker for live Texas Hold'em home games. Cards stay physical, chips live on everyone's phone.",
+            "email": "winnerkarthik07@gmail.com",
+            "sameAs": ["https://github.com/KarthikSubramanian07/Piss-Poker"],
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Fremont",
+              "addressRegion": "CA",
+              "addressCountry": "US"
+            },
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "contactType": "customer support",
+                "email": "winnerkarthik07@gmail.com",
+                "url": "https://piss-poker.pages.dev/contact/",
+                "areaServed": "US",
+                "availableLanguage": "English"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://piss-poker.pages.dev/#website",
+            "name": "Piss Poker tracker",
+            "url": "https://piss-poker.pages.dev/",
+            "description": "Chips on your phone, cards on the table. A free realtime chip tracker for live home poker.",
+            "publisher": { "@id": "https://piss-poker.pages.dev/#organization" },
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://piss-poker.pages.dev/#app",
+            "name": "Piss Poker",
+            "alternateName": "Piss Poker tracker",
+            "url": "https://piss-poker.pages.dev/",
+            "description": "Realtime chip tracker for live Texas Hold'em home games. Cards stay physical, chips live on everyone's phone.",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires a modern web browser",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "publisher": { "@id": "https://piss-poker.pages.dev/#organization" }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://piss-poker.pages.dev/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is the Piss Poker tracker?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Piss Poker is a free realtime chip tracker for live home poker. Deal real cards at the table while everyone bets, raises, and scoops pots from their own phone."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need an account or app install?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Open https://piss-poker.pages.dev in a browser, start a table or join with a four-letter code, and pick a display name."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Piss Poker deal cards or move real money?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. It tracks chips only. Cards stay physical, and settle-up shows who owes whom without processing payments."
+                }
+              }
+            ]
+          }
+        ]
       }
     </script>
   </head>
   <body>
-    <div id="root"></div>
-    <noscript>Piss Poker needs JavaScript to keep your chips in sync.</noscript>
+    <div id="root">
+      <main class="home">
+        <section class="home-hero">
+          <h1 class="wordmark"><mark>Piss</mark> Poker tracker</h1>
+          <p class="home-tagline">Chips on your phone. Cards on the table.</p>
+        </section>
+        <section>
+          <h2>Realtime chip tracker for live home poker</h2>
+          <p>
+            Piss Poker is a free browser chip tracker for in-person Texas Hold'em. Deal real cards at a real table.
+            Everyone bets, raises, folds, and scoops pots from their own phone. No app store install, no accounts, and no
+            plastic chip set required. Start a table at piss-poker.pages.dev, share the four-letter code or QR link, and
+            keep every stack honest while the cards stay physical.
+          </p>
+          <h2>How a home game runs</h2>
+          <ol class="home-how">
+            <li>Start a table and share the code.</li>
+            <li>Everyone joins on their own phone.</li>
+            <li>Deal real cards. The app keeps every chip honest.</li>
+          </ol>
+          <h2>Built for real tables</h2>
+          <p>
+            Blinds post themselves, turn order is enforced, side pots layer correctly, chops preview each share before
+            payout, and settle-up finds the fewest transfers to square the night. Undo, proxy seats, and a table display
+            mode cover the messy parts of a living-room game. Open the site to play, or read
+            <a href="/about/">about</a>, <a href="/contact/">contact</a>, <a href="/privacy/">privacy</a>, and
+            <a href="/llms.txt">llms.txt</a>.
+          </p>
+        </section>
+      </main>
+    </div>
+    <noscript>
+      <p>
+        Piss Poker tracker needs JavaScript to keep chips in sync during a live table. The overview above still describes
+        the product: a free realtime chip tracker for home poker at https://piss-poker.pages.dev.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

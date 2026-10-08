@@ -90,6 +90,12 @@ export function Home({ navigate }: { navigate: (to: string) => void }) {
         <li>Everyone joins on their own phone.</li>
         <li>Deal real cards. The app keeps every chip honest.</li>
       </ol>
+
+      <nav className="home-links" aria-label="Site">
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy/">Privacy</a>
+      </nav>
     </main>
   );
 }

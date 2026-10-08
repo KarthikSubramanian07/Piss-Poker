@@ -81,6 +81,8 @@ Before writing a line, we read the code of 22 open source chip trackers and put 
 | `worker/src/room.ts` | The `Room` Durable Object: sockets, permissions, undo, presence, rate limits, expiry. |
 | `worker/src/index.ts` | API router, origin allowlist, room creation with per-address rate limiting. |
 | `functions/api/[[path]].ts` | Pages Function forwarding `/api/*` to the worker. |
+| `functions/_middleware.ts` | Accept negotiation (`text/markdown`), real 404s, SPA rewrite for `/t/*`. |
+| `public/` | Trust pages, `llms.txt`, markdown mirrors, `404.html`, SEO assets. |
 | `src/` | The React app: screens, the action dock, sheets, table display. |
 | `test/` | Engine scenarios, a seeded fuzzer, protocol and settlement tests. |
 | `worker/test/` | Durable Object integration tests running inside workerd. |
