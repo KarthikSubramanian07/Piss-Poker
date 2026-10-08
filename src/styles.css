@@ -499,6 +499,24 @@ button:disabled {
   color: var(--ink-3);
 }
 
+.home-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: var(--ink-3);
+}
+
+.home-links a {
+  color: inherit;
+  text-underline-offset: 0.15em;
+}
+
+.home-links a:hover {
+  color: var(--ink-2);
+}
+
 /* ---------- join and notices ---------- */
 
 .join,
