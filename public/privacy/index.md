@@ -22,6 +22,6 @@ Leave a table to stop participating. Clear site data in your browser to remove t
 
 ## Contact
 
-Privacy questions: winnerkarthik07@gmail.com or https://github.com/KarthikSubramanian07/Piss-Poker/issues
+Privacy questions: https://github.com/KarthikSubramanian07/Piss-Poker/issues (say it is private and the maintainer will follow up privately)
 
 See also [About](/about/) and [Contact](/contact/).
