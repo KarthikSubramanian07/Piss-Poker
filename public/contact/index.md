@@ -9,11 +9,11 @@ The fastest public channel is the issue tracker on the project repository:
 - Open a bug or feature request: https://github.com/KarthikSubramanian07/Piss-Poker/issues
 - Prefer a private security report when a defect could let someone move another player's chips or impersonate a seat. Describe the table steps, browser, and whether the room code can be shared safely.
 
-## Email
+## Private reports
 
-Project email for support and security coordination: winnerkarthik07@gmail.com
+For support or security coordination, open an issue at https://github.com/KarthikSubramanian07/Piss-Poker/issues titled "Contact" and say it is private; the maintainer will follow up through a private channel.
 
-Please include "Piss Poker" in the subject line, the approximate time of the session, and whether the problem happened while creating a table, joining, betting, awarding a pot, or settling up.
+Please include the approximate time of the session, and whether the problem happened while creating a table, joining, betting, awarding a pot, or settling up.
 
 ## What to expect
 
