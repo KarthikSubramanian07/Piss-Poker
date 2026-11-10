@@ -76,10 +76,19 @@ function Menu({ setOpen, onDisplay, onLeft }: { setOpen: (s: SheetName) => void;
               disabled: inHand,
               note: inHand ? 'After this hand' : undefined,
             })}
-          {item('Sound on your turn', () => {
-            setSoundEnabled(!sound);
-            setSound(!sound);
-          }, { note: sound ? 'On' : 'Off' })}
+          <li>
+            <button
+              className="menu-item"
+              aria-pressed={sound}
+              onClick={() => {
+                setSoundEnabled(!sound);
+                setSound(!sound);
+              }}
+            >
+              <span>Sound on your turn</span>
+              <span className="menu-note">{sound ? 'On' : 'Off'}</span>
+            </button>
+          </li>
         </ul>
       )}
 

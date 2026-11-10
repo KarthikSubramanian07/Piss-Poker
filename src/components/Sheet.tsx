@@ -22,7 +22,7 @@ export function Sheet({ open, onClose, title, children }: Props) {
     <dialog
       ref={ref}
       className="sheet"
-      aria-label={title}
+      aria-labelledby="sheet-title"
       onCancel={(e) => {
         e.preventDefault();
         onClose();
@@ -34,7 +34,7 @@ export function Sheet({ open, onClose, title, children }: Props) {
       {open && (
         <div className="sheet-body">
           <header className="sheet-head">
-            <h2>{title}</h2>
+            <h2 id="sheet-title">{title}</h2>
             <button className="icon-btn" onClick={onClose} aria-label="Close">
               <Icon name="close" />
             </button>

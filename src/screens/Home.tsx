@@ -41,7 +41,10 @@ export function Home({ navigate }: { navigate: (to: string) => void }) {
   };
 
   return (
-    <main className="home">
+    <main id="main" className="home" tabIndex={-1}>
+      <a className="skip-link" href="#home-actions">
+        Skip to actions
+      </a>
       <section className="home-hero">
         <h1 className="wordmark">
           <mark>Piss</mark> Poker
@@ -49,7 +52,7 @@ export function Home({ navigate }: { navigate: (to: string) => void }) {
         <p className="home-tagline">Chips on your phone. Cards on the table.</p>
       </section>
 
-      <section className="home-actions">
+      <section id="home-actions" className="home-actions">
         <button className="btn btn-primary btn-xl" onClick={start} disabled={busy !== null}>
           {busy === 'new' ? 'Setting up…' : 'Start a table'}
         </button>
@@ -71,6 +74,7 @@ export function Home({ navigate }: { navigate: (to: string) => void }) {
               spellCheck={false}
               enterKeyHint="go"
               maxLength={CODE_LENGTH + 4}
+              aria-invalid={error ? true : undefined}
               aria-describedby={error ? 'home-error' : undefined}
             />
             <button className="btn btn-quiet btn-lg" disabled={code.length !== CODE_LENGTH || busy !== null}>

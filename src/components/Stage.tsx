@@ -50,7 +50,7 @@ export function Stage() {
     <section className="stage" aria-label="Pot">
       <span className="label">{game.phase === 'done' ? 'Paid out' : 'Pot'}</span>
       <Num value={pot} className="pot-amount" />
-      <div className="stage-line" key={lineKey}>
+      <div className="stage-line" key={lineKey} aria-live="polite">
         {line}
       </div>
       {game.phase === 'showdown' && game.pots.length > 1 && (

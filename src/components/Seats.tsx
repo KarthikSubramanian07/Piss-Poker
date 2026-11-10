@@ -77,7 +77,8 @@ export function Seats() {
                 {p.name}
                 {hand && game.buttonId === p.id && (
                   <span className="dealer" title="Dealer button">
-                    D
+                    <span className="sr-only">Dealer</span>
+                    <span aria-hidden="true">D</span>
                   </span>
                 )}
                 {p.id === you.id && <span className="seat-you">you</span>}

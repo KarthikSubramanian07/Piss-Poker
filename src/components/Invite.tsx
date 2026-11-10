@@ -30,8 +30,9 @@ export function Invite({ code, qrSize = 176 }: { code: string; qrSize?: number }
   return (
     <div className="invite">
       <div className="invite-code">
-        <span className="big-code" aria-label={`Table code ${code.split('').join(' ')}`}>
-          {code}
+        <span className="big-code">
+          <span className="sr-only">Table code {code.split('').join(' ')}</span>
+          <span aria-hidden="true">{code}</span>
         </span>
         <span className="muted invite-url mono">{url.replace(/^https?:\/\//, '')}</span>
       </div>
