@@ -27,11 +27,14 @@ export function Join({ onDisplay }: { onDisplay: () => void }) {
 
   if (pendingClaim) {
     return (
-      <main className="join">
+      <main className="join" id="main" tabIndex={-1}>
         <div className="join-card">
-          <p className="join-code">{room.code}</p>
+          <p className="join-code">
+            <span className="sr-only">Table code {room.code.split('').join(' ')}</span>
+            <span aria-hidden="true">{room.code}</span>
+          </p>
           <h1 className="join-title">Asking the table</h1>
-          <p className="muted">
+          <p className="muted" role="status" aria-live="polite">
             Someone at the table needs to approve moving the seat of{' '}
             <strong>{room.members.find((m) => m.id === pendingClaim.playerId)?.name}</strong> to this device.
           </p>
@@ -49,9 +52,12 @@ export function Join({ onDisplay }: { onDisplay: () => void }) {
   }
 
   return (
-    <main className="join">
+    <main className="join" id="main" tabIndex={-1}>
       <div className="join-card">
-        <p className="join-code">{room.code}</p>
+        <p className="join-code">
+          <span className="sr-only">Table code {room.code.split('').join(' ')}</span>
+          <span aria-hidden="true">{room.code}</span>
+        </p>
         <h1 className="join-title">Take a seat</h1>
         <p className="muted">{status}</p>
 

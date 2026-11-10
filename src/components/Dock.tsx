@@ -152,7 +152,7 @@ function ActionPanel({ legal, player, actingFor, onCancel }: ActionProps) {
   ].filter(Boolean) as { key: string; label: string; hint: string; cls: string; onClick: () => void }[];
 
   return (
-    <div className="dock dock-turn" data-acting-for={actingFor || undefined}>
+    <div className="dock dock-turn" data-acting-for={actingFor || undefined} role="region" aria-label={actingFor ? `Acting for ${player.name}` : 'Your turn'}>
       <div className="turn-head">
         <div>
           <span className="turn-title">{actingFor ? `Acting for ${player.name}` : 'Your turn'}</span>
@@ -285,7 +285,13 @@ function RaisePanel({ legal, pot, currentBet, bb, label, busy, onBack, onConfirm
 
       <div className="presets">
         {presets.map((p) => (
-          <button key={p.label} className="preset" data-on={final === p.value || undefined} onClick={() => set(p.value)}>
+          <button
+            key={p.label}
+            className="preset"
+            data-on={final === p.value || undefined}
+            aria-pressed={final === p.value}
+            onClick={() => set(p.value)}
+          >
             {p.label}
           </button>
         ))}

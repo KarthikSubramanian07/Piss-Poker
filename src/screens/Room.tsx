@@ -53,7 +53,7 @@ export function Room({ code, display, navigate }: { code: string; display: boole
 
 function Notice({ title, body, action, onAction }: { title: string; body: string; action: string; onAction: () => void }) {
   return (
-    <main className="notice">
+    <main className="notice" id="main" tabIndex={-1}>
       <h1 className="notice-title">{title}</h1>
       <p className="muted">{body}</p>
       <button className="btn btn-primary btn-lg" onClick={onAction}>

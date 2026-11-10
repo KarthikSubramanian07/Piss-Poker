@@ -24,8 +24,14 @@ export function Display({ onExit }: { onExit: () => void }) {
 
   return (
     <div className="display" data-phase={game.phase}>
+      <a className="skip-link" href="#display-main">
+        Skip to pot
+      </a>
       <header className="display-top">
-        <span className="big-code">{room.code}</span>
+        <span className="big-code">
+          <span className="sr-only">Table code {room.code.split('').join(' ')}</span>
+          <span aria-hidden="true">{room.code}</span>
+        </span>
         <span className="display-phase">
           {game.handNo > 0 ? `Hand ${game.handNo} · ` : ''}
           {game.phase === 'betting' ? STREET_NAMES[game.street] : game.phase === 'lobby' ? 'Lobby' : game.phase === 'showdown' ? 'Showdown' : 'Hand over'}
@@ -35,7 +41,7 @@ export function Display({ onExit }: { onExit: () => void }) {
         </button>
       </header>
 
-      <section className="display-center">
+      <section id="display-main" className="display-center" tabIndex={-1}>
         <div className="display-pot">
           <span className="label">{game.phase === 'done' ? 'Paid out' : 'Pot'}</span>
           <Num value={pot} className="display-pot-amount" />
