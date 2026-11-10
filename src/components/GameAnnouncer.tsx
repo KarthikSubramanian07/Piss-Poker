@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import { findPlayer, potTotal } from '../../shared/engine';
-import { fmt, NEXT_CARDS, STREET_NAMES } from '../lib/format';
+import { fmt, STREET_NAMES } from '../lib/format';
 import { useTable } from '../lib/table';
 import { outcomeLine } from './Stage';
+
+/** Street prompts for the live region — worded apart from the visible deal buttons. */
+const NEXT_STREET_ANNOUNCE = ['', 'Flop cards next', 'Turn card next', 'River card next'] as const;
 
 /** Off-screen live region so screen readers hear turns, pot size and outcomes. */
 export function GameAnnouncer() {
@@ -19,16 +22,16 @@ export function GameAnnouncer() {
       const street = STREET_NAMES[game.street];
       const fresh =
         game.street > 0 && game.players.every((p) => !p.acted) && game.currentBet === 0
-          ? `${NEXT_CARDS[game.street]}. `
+          ? `${NEXT_STREET_ANNOUNCE[game.street]}. `
           : '';
-      const who = actor.id === you.id ? 'Your turn' : `${actor.name} to act`;
+      const who = actor.id === you.id ? 'It is your turn to act' : `${actor.name} is to act`;
       const toCall = game.currentBet - actor.bet;
       parts.push(
         `Hand ${game.handNo}, ${street}. ${fresh}${who}${toCall > 0 ? `, ${fmt(toCall)} to call` : ''}. Pot ${fmt(pot)}.`,
       );
     } else if (game.phase === 'showdown') {
       parts.push(
-        `Showdown. ${game.runout ? 'All in. Run it out.' : 'Cards up.'} Pot ${fmt(pot)}. Who won?`,
+        `Showdown. ${game.runout ? 'Everyone is all in; run the board out.' : 'Cards up.'} Pot ${fmt(pot)}. Pick every winner.`,
       );
     } else if (game.phase === 'done') {
       parts.push(`${outcomeLine(game, nameOf)}. Paid out ${fmt(pot)}.`);
